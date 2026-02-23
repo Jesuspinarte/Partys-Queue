@@ -137,6 +137,8 @@
         "Assets/Core/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset",
         "Assets/Core/Art/GaW_Pad_Circle.png",
         "Assets/Core/TextMesh Pro/Shaders/TMP_Sprite.shader",
-        "Assets/Core/TextMesh Pro/Sprites/EmojiOne.png"
+        "Assets/Core/TextMesh Pro/Sprites/EmojiOne.png",
+		"Assets/Resources/PerformanceTestRunSettings.json",
+		"Assets/Resources/PerformanceTestRunInfo.json"
     ]
 }

@@ -85,8 +85,11 @@ public class GameMaster : MonoBehaviour
 
         
         int difficultyChange = 0;
+        
+#if UNITY_EDITOR
         if (EditorTools.GetCustomDifficulty() == Difficulty.UNSELECTED)
         {
+#endif
             if (gamesPlayedAtDifficultyLevel >= gamesPerDifficulty)
             {
                 difficultyChange++;
@@ -104,7 +107,9 @@ public class GameMaster : MonoBehaviour
             {
                 difficultyChange = 0; // enforce no difficulty change if already at max or minimum difficulty
             }
+#if UNITY_EDITOR
         }
+#endif
 
         if (shouldLoseLife && gameOverlay.LifeCounter.GetLivesRemaining() <= 1)
         {
@@ -156,7 +161,10 @@ public class GameMaster : MonoBehaviour
     public static float GetTotalTime() { return  (instance == null)?15:(20-Mathf.Clamp((instance.gamesPlayedAtDifficultyLevel*(10f/(instance.gamesPerDifficulty-1))),0,10)); }
     public static Difficulty GetDifficulty()
     {
+#if UNITY_EDITOR
         return EditorTools.GetCustomDifficulty()!=Difficulty.UNSELECTED? EditorTools.GetCustomDifficulty() : ((instance == null) ? Difficulty.VERY_EASY : instance.currentDifficulty);
+#endif
+        return ((instance == null) ? Difficulty.VERY_EASY : instance.currentDifficulty);
     }
 
     public static void Log(object o)

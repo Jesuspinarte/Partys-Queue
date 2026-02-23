@@ -103,10 +103,10 @@ TextureImporter:
       name: MicrogameMashupLogo_0
       rect:
         serializedVersion: 2
-        x: 254
-        y: 0
-        width: 2662
-        height: 2545
+        x: 253
+        y: 302
+        width: 2664
+        height: 2547
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: bc289e480cc7d4545b4dba7ecd2d408d
     internalID: 0
     vertices: []
     indices: 

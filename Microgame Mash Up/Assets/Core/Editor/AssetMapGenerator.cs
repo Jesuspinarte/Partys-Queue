@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 using UnityEditor;
 using System.IO;
@@ -102,3 +104,4 @@ public class AssetMapGenerator
         public List<string> paths;
     }
 }
+#endif
