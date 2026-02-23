@@ -66,5 +66,7 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj",
     },
-    "dotnet.defaultSolution": "Microgame Mash Up.sln"
+    "dotnet.defaultSolution": "Microgame Mash Up.sln",
+    "editor.tabSize": 2,
+    "editor.codeLens": false
 }
