@@ -69,7 +69,7 @@ public class GameManager_2 : GAWGameManager
         break;
     }
 
-    SetSuspect();
+    CreateInitialSuspect();
     UpdateScore();
   }
 
@@ -121,7 +121,7 @@ public class GameManager_2 : GAWGameManager
     );
   }
 
-  private void SetSuspect()
+  private void CreateInitialSuspect()
   {
     (SuspectProfile suspect, GameObject suspectInstace) = CreateSuspect(targetSuspectSpawnPoint);
     _targetSuspect = suspect;
@@ -132,11 +132,12 @@ public class GameManager_2 : GAWGameManager
     targetSuspectShapeText.text = _targetSuspect.suspectShape.ToString();
 
     _targetSuspectInstance.transform.localScale = targetSuspectSpawnPoint.localScale;
+    Destroy(_targetSuspectInstance);
 
     targetSuspectMeterText.text = $"Check for {_targetSuspectMeter} characteristic(s)";
   }
 
-  private void GenerateSuspect()
+  private void SpawnNewSuspect()
   {
     SuspectProfile previousSupect = _currentSuspect;
     bool keepSearching = true;
@@ -170,7 +171,7 @@ public class GameManager_2 : GAWGameManager
     if (_currentScore < 0) _currentScore = 0;
     else if (_currentScore >= _goalScore) GameMaster.GameSucceeded();
 
-    if (_currentScore < _goalScore) GenerateSuspect();
+    if (_currentScore < _goalScore) SpawnNewSuspect();
     currentScoreText.text = $"{_currentScore} / {_goalScore}";
   }
 
