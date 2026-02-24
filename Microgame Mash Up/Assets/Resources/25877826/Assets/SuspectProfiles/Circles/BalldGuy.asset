@@ -17,5 +17,5 @@ MonoBehaviour:
   claimedShape: 0
   suspectColor: 0
   claimedColor: 0
-  prefab: {fileID: 0}
+  prefab: {fileID: 2505713799385385246, guid: 337c8005f694a8d48aae364c134544ac, type: 3}
   material: {fileID: 0}

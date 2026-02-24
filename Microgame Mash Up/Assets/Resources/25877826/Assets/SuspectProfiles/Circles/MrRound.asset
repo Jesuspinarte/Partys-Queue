@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a614c0be919419e48be4c7f6a90694e8, type: 3}
   m_Name: MrRound
   m_EditorClassIdentifier: 
-  suspectName: Don Angulo (Mr. Angles)
+  suspectName: Mr. Round
   suspectShape: 0
   claimedShape: 0
   suspectColor: 2
   claimedColor: 1
-  prefab: {fileID: 0}
+  prefab: {fileID: 550092436211479322, guid: 32b0da9be16848f4a9232a511d0df9af, type: 3}
   material: {fileID: 0}
