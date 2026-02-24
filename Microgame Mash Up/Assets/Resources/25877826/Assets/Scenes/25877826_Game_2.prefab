@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Deny!
+  m_text: Found youuuu!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 8347254520382020253}
   - component: {fileID: 6132318488841978786}
   m_Layer: 5
-  m_Name: SuspectName
+  m_Name: CurrentSuspectName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -593,8 +593,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, 25877826
+      - m_Target: {fileID: 8286054163100070389}
+        m_TargetAssemblyTypeName: GameManager_2, 25877826
         m_MethodName: OnAllow
         m_Mode: 1
         m_Arguments:
@@ -643,8 +643,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -500, y: 0}
-  m_SizeDelta: {x: 700, y: -200}
+  m_AnchoredPosition: {x: -500, y: -137.5}
+  m_SizeDelta: {x: 700, y: -325}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &501390891003335089
 MonoBehaviour:
@@ -672,6 +672,37 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1616622349688100024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6830236708669260230}
+  m_Layer: 0
+  m_Name: TargetPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6830236708669260230
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616622349688100024}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.5, y: 2.5, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4020767257427596347}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1757176850420940931
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,6 +914,7 @@ Transform:
   m_Children:
   - {fileID: 8516089206618716895}
   - {fileID: 839788003059926019}
+  - {fileID: 6830236708669260230}
   - {fileID: 7634238586292333877}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -923,11 +955,11 @@ MonoBehaviour:
   finishContainer: {fileID: 8334352957138027962}
   finishText: {fileID: 5506479725747697240}
   currentScoreText: {fileID: 1120505574028345419}
-  suspectNameText: {fileID: 6132318488841978786}
-  targetSuspectNameText: {fileID: 0}
-  targetSuspectShapeText: {fileID: 0}
-  targetSuspectColorText: {fileID: 0}
-  targetSuspectMeterText: {fileID: 0}
+  currentSuspectNameText: {fileID: 6132318488841978786}
+  targetSuspectNameText: {fileID: 7455051021145087147}
+  targetSuspectShapeText: {fileID: 5167659810527006013}
+  targetSuspectColorText: {fileID: 353688986588023223}
+  targetSuspectMeterText: {fileID: 857863739071486226}
   suspectList:
   - {fileID: 11400000, guid: b4ceb018bfa58334094f5475d90c7bcb, type: 2}
   - {fileID: 11400000, guid: ac1071c5b9fbe464596ddebc11ad9781, type: 2}
@@ -938,7 +970,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cbd83d80af949fa44a26717cbf33f9d7, type: 2}
   - {fileID: 11400000, guid: 37dec8563d772b944878e077f5f53ff7, type: 2}
   - {fileID: 11400000, guid: e9ce8b9d16d033849b9d2975eb1af3a4, type: 2}
-  spawnPoint: {fileID: 7634238586292333877}
+  targetSuspectSpawnPoint: {fileID: 6830236708669260230}
+  currentSuspectSpawnPoint: {fileID: 7634238586292333877}
 --- !u!1 &2805111484926186837
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,7 +1602,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Check for 1 characteristic(s)
+  m_text: Suspect characteristics
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1969,7 +2002,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Allow!
+  m_text: You're in shape!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2711,8 +2744,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, 25877826
+      - m_Target: {fileID: 8286054163100070389}
+        m_TargetAssemblyTypeName: GameManager_2, 25877826
         m_MethodName: OnDeny
         m_Mode: 1
         m_Arguments:

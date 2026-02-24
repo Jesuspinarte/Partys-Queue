@@ -14,7 +14,7 @@ public class GameManager_2 : GAWGameManager
   [SerializeField] private TMP_Text currentScoreText;
 
   [Header("Current Suspect References")]
-  [SerializeField] private TMP_Text suspectNameText;
+  [SerializeField] private TMP_Text currentSuspectNameText;
 
   [Header("Target Passport References")]
   [SerializeField] private TMP_Text targetSuspectNameText;
@@ -24,7 +24,8 @@ public class GameManager_2 : GAWGameManager
 
   [Header("Spawn Settings")]
   [SerializeField] private List<SuspectProfile> suspectList = new List<SuspectProfile>();
-  [SerializeField] private Transform spawnPoint;
+  [SerializeField] private Transform targetSuspectSpawnPoint;
+  [SerializeField] private Transform currentSuspectSpawnPoint;
 
   // Private vars
   private int _goalScore = 10;
@@ -68,8 +69,8 @@ public class GameManager_2 : GAWGameManager
         break;
     }
 
-    UpdateScore();
     SetSuspect();
+    UpdateScore();
   }
 
   public override void OnGameStart()
@@ -86,7 +87,7 @@ public class GameManager_2 : GAWGameManager
     if (finishContainer != null)
     {
       finishContainer.SetActive(true);
-      finishText.text = "YOU ARE ON SHAPE!";
+      finishText.text = "YOU ARE IN SHAPE!";
     }
   }
 
@@ -111,23 +112,26 @@ public class GameManager_2 : GAWGameManager
   }
 
   // Private
-  private (SuspectProfile suspect, GameObject suspectInstace) CreateSuspect()
+  private (SuspectProfile suspect, GameObject suspectInstace) CreateSuspect(Transform spawnPoint)
   {
+    SuspectProfile suspect = suspectList[Random.Range(0, suspectList.Count)];
     return (
-      suspect: suspectList[Random.Range(0, suspectList.Count)],
-      suspectInstace: _currentSuspectInstance = Instantiate(_currentSuspect.prefab, spawnPoint.position, Quaternion.identity)
+      suspect,
+      suspectInstace: Instantiate(suspect.prefab, spawnPoint.position, Quaternion.identity)
     );
   }
 
   private void SetSuspect()
   {
-    (SuspectProfile suspect, GameObject suspectInstace) = CreateSuspect();
+    (SuspectProfile suspect, GameObject suspectInstace) = CreateSuspect(targetSuspectSpawnPoint);
     _targetSuspect = suspect;
     _targetSuspectInstance = suspectInstace;
 
-    suspectNameText.text = _currentSuspect.suspectName;
-    targetSuspectColorText.text = _currentSuspect.claimedColor.ToString();
-    targetSuspectShapeText.text = _currentSuspect.claimedShape.ToString();
+    targetSuspectNameText.text = _targetSuspect.suspectName;
+    targetSuspectColorText.text = _targetSuspect.suspectColor.ToString();
+    targetSuspectShapeText.text = _targetSuspect.suspectShape.ToString();
+
+    _targetSuspectInstance.transform.localScale = targetSuspectSpawnPoint.localScale;
 
     targetSuspectMeterText.text = $"Check for {_targetSuspectMeter} characteristic(s)";
   }
@@ -143,7 +147,7 @@ public class GameManager_2 : GAWGameManager
       _matchesTargetSuspect = false;
       if (_currentSuspectInstance != null) Destroy(_currentSuspectInstance);
 
-      (SuspectProfile suspect, GameObject suspectInstace) = CreateSuspect();
+      (SuspectProfile suspect, GameObject suspectInstace) = CreateSuspect(currentSuspectSpawnPoint);
 
       _currentSuspect = suspect;
       _currentSuspectInstance = suspectInstace;
@@ -157,6 +161,8 @@ public class GameManager_2 : GAWGameManager
       if (previousSupect == null) keepSearching = false;
       else if (previousSupect.name != _currentSuspect.name) keepSearching = false;
     }
+
+    currentSuspectNameText.text = _currentSuspect.suspectName;
   }
 
   private void UpdateScore()
