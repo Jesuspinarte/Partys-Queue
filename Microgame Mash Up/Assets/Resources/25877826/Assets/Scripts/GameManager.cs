@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public class GameManager : GAWGameManager
 {
@@ -10,18 +13,26 @@ public class GameManager : GAWGameManager
   [SerializeField] private GameObject finishContainer;
   [SerializeField] private TMP_Text finishText;
 
-  [Header("Suspect Area References")]
-  [SerializeField] private TMP_Text suspectNameText;
+  [Header("Blacklist Area References")]
   [SerializeField] private TMP_Text currentScoreText;
-  [SerializeField] private TMP_Text shapeDescriptionText;
-  [SerializeField] private TMP_Text colorDescriptionText;
+  [SerializeField] private TMP_Text[] rulesList;
+
+  [Header("Character Area References")]
+  [SerializeField] private TMP_Text characterNameText;
+  [SerializeField] private TMP_Text characterAgeText;
+  [SerializeField] private TMP_Text characterOccupationText;
 
   [Header("Spawn Settings")]
   [SerializeField] private List<SuspectProfile> suspectList = new List<SuspectProfile>();
+  [SerializeField] private List<EyesAccessoryPair> eyesAccessoryList = new List<EyesAccessoryPair>();
+  [SerializeField] private List<HeadAccessoryPair> headAccessoryList = new List<HeadAccessoryPair>();
+  [SerializeField] private List<MouthAccessoryPair> mouthAccessoryList = new List<MouthAccessoryPair>();
+  [SerializeField] private List<NeckAccessoryPair> neckAccessoryList = new List<NeckAccessoryPair>();
+  [SerializeField] private List<PetsAccessoryPair> petsAccessoryList = new List<PetsAccessoryPair>();
   [SerializeField] private Transform spawnPoint;
 
   // Private vars
-  private SuspectProfile _currentSuspect;
+  private SuspectProfileData _currentSuspect;
   private GameObject _currentSuspectInstance;
   private bool _isLying = false;
   private int _currentScore = 0;
@@ -62,25 +73,27 @@ public class GameManager : GAWGameManager
 
   public override void OnGameSucceeded()
   {
-    if (_currentSuspectInstance != null) Destroy(_currentSuspectInstance);
+    RemoveCurrentSuspect();
+
     if (gameContainer != null) gameContainer.SetActive(false);
 
     if (finishContainer != null)
     {
       finishContainer.SetActive(true);
-      finishText.text = "YOU ARE ON SHAPE!";
+      finishText.text = "Nice party! Keep your job!";
     }
   }
 
   public override void OnGameFailed()
   {
-    if (_currentSuspectInstance != null) Destroy(_currentSuspectInstance);
+    RemoveCurrentSuspect();
+
     if (gameContainer != null) gameContainer.SetActive(false);
 
     if (finishContainer != null)
     {
       finishContainer.SetActive(true);
-      finishText.text = "YOU ARE OUT OF SHAPE!";
+      finishText.text = "This party sucks! You're FIRED!";
     }
   }
 
@@ -92,28 +105,87 @@ public class GameManager : GAWGameManager
   }
 
   // Private
+  private void RemoveCurrentSuspect()
+  {
+    for (int i = spawnPoint.childCount - 1; i >= 0; i--)
+      Destroy(spawnPoint.GetChild(i).gameObject);
+  }
+
   private void GenerateSuspect()
   {
-    SuspectProfile previousSupect = _currentSuspect;
+    SuspectProfileData previousSupect = _currentSuspect;
     bool keepSearching = true;
 
     while (keepSearching)
     {
       _isLying = false;
-      if (_currentSuspectInstance != null) Destroy(_currentSuspectInstance);
 
-      _currentSuspect = suspectList[Random.Range(0, suspectList.Count)];
-      _currentSuspectInstance = Instantiate(_currentSuspect.prefab, spawnPoint.position, Quaternion.identity);
+      // 1. Generate suspect different than current one
+      SuspectProfile newSuspectProfile = suspectList[Random.Range(0, suspectList.Count)];
+      if (previousSupect != null && newSuspectProfile.englishName == previousSupect.profileData.englishName) continue;
 
-      if (_currentSuspect.suspectShape != _currentSuspect.claimedShape) _isLying = true;
-      if (_currentSuspect.suspectColor != _currentSuspect.claimedColor) _isLying = true;
+      // 2. Remove current suspect
+      if (_currentSuspectInstance != null) RemoveCurrentSuspect();
+      // 3. Instantiate current suspect
+      InstantiateSuspect(newSuspectProfile);
+      // 4. Add accessories
+      InstantiateAccessories();
+      // 5. Update UI
+      UpdateSuspectID();
 
-      suspectNameText.text = _currentSuspect.suspectName;
-      colorDescriptionText.text = _currentSuspect.claimedColor.ToString();
-      shapeDescriptionText.text = _currentSuspect.claimedShape.ToString();
+      // . Add and check new rules
+      // if (_currentSuspect.suspectShapeType != _currentSuspect.claimedShape) _isLying = true;
+      // if (_currentSuspect.suspectColor != _currentSuspect.claimedColor) _isLying = true;
 
-      if (previousSupect == null) keepSearching = false;
-      else if (previousSupect.name != _currentSuspect.name) keepSearching = false;
+      keepSearching = false;
+    }
+  }
+
+  private void InstantiateSuspect(SuspectProfile profile)
+  {
+    _currentSuspect = new SuspectProfileData(profile);
+    _currentSuspectInstance = Instantiate(_currentSuspect.profileData.prefab, spawnPoint.position + Vector3.forward, Quaternion.identity, spawnPoint);
+  }
+
+  private void UpdateSuspectID()
+  {
+    characterNameText.text = _currentSuspect.activeName;
+    characterAgeText.text = $"{_currentSuspect.age} years";
+    characterOccupationText.text = _currentSuspect.GetOccupationText();
+  }
+
+  private void InstantiateAccessories()
+  {
+    GameObject accessoryPrefab = null;
+    // Eyes accessories
+    if (_currentSuspect.eyesAccessory != EnumEyesAccessoryType.NONE)
+    {
+      accessoryPrefab = eyesAccessoryList.Find(accessory => accessory.type == _currentSuspect.eyesAccessory).accessoryObj;
+      Instantiate(accessoryPrefab, spawnPoint.position, Quaternion.identity, spawnPoint);
+    }
+    // Head accessories
+    if (_currentSuspect.headAccessory != EnumHeadAccessoryType.NONE)
+    {
+      accessoryPrefab = headAccessoryList.Find(accessory => accessory.type == _currentSuspect.headAccessory).accessoryObj;
+      Instantiate(accessoryPrefab, spawnPoint.position, Quaternion.identity, spawnPoint);
+    }
+    // Mouth accessories
+    if (_currentSuspect.mouthAccessory != EnumMouthAccessoryType.NONE)
+    {
+      accessoryPrefab = mouthAccessoryList.Find(accessory => accessory.type == _currentSuspect.mouthAccessory).accessoryObj;
+      Instantiate(accessoryPrefab, spawnPoint.position, Quaternion.identity, spawnPoint);
+    }
+    // Neck accessories
+    if (_currentSuspect.neckAccessory != EnumNeckAccessoryType.NONE)
+    {
+      accessoryPrefab = neckAccessoryList.Find(accessory => accessory.type == _currentSuspect.neckAccessory).accessoryObj;
+      Instantiate(accessoryPrefab, spawnPoint.position, Quaternion.identity, spawnPoint);
+    }
+    // Pets accessories
+    if (_currentSuspect.petsAccessory != EnumPetsAccessoryType.NONE)
+    {
+      accessoryPrefab = petsAccessoryList.Find(accessory => accessory.type == _currentSuspect.petsAccessory).accessoryObj;
+      Instantiate(accessoryPrefab, spawnPoint.position, Quaternion.identity, spawnPoint);
     }
   }
 

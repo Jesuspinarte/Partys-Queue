@@ -4,13 +4,10 @@ using UnityEngine;
 public class SuspectProfile : ScriptableObject
 {
   [Header("Suspect Data")]
-  public string suspectName;
-  public ESuspect suspectShape;
-  public ESuspect claimedShape;
-  public EColor suspectColor;
-  public EColor claimedColor;
+  public string englishName;
+  public string spanishName;
+  public EnumSuspectShapeType suspectShapeType;
 
   [Header("Suspect Assets")]
   public GameObject prefab;
-  public Material material;
 }

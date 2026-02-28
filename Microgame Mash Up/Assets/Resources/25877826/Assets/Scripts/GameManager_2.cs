@@ -127,9 +127,9 @@ public class GameManager_2 : GAWGameManager
     _targetSuspect = suspect;
     _targetSuspectInstance = suspectInstace;
 
-    targetSuspectNameText.text = _targetSuspect.suspectName;
-    targetSuspectColorText.text = _targetSuspect.suspectColor.ToString();
-    targetSuspectShapeText.text = _targetSuspect.suspectShape.ToString();
+    // targetSuspectNameText.text = _targetSuspect.suspectName;
+    // targetSuspectColorText.text = _targetSuspect.suspectColor.ToString();
+    targetSuspectShapeText.text = _targetSuspect.suspectShapeType.ToString();
 
     _targetSuspectInstance.transform.localScale = targetSuspectSpawnPoint.localScale;
     Destroy(_targetSuspectInstance);
@@ -153,8 +153,8 @@ public class GameManager_2 : GAWGameManager
       _currentSuspect = suspect;
       _currentSuspectInstance = suspectInstace;
 
-      if (_currentSuspect.suspectShape == _targetSuspect.suspectShape) ++suspectMeter;
-      if (_currentSuspect.suspectColor == _targetSuspect.suspectColor) ++suspectMeter;
+      if (_currentSuspect.suspectShapeType == _targetSuspect.suspectShapeType) ++suspectMeter;
+      // if (_currentSuspect.suspectColor == _targetSuspect.suspectColor) ++suspectMeter;
       if (_currentSuspect.name == _targetSuspect.name) ++suspectMeter;
 
       if (suspectMeter >= _targetSuspectMeter) _matchesTargetSuspect = true;
@@ -163,7 +163,7 @@ public class GameManager_2 : GAWGameManager
       else if (previousSupect.name != _currentSuspect.name) keepSearching = false;
     }
 
-    currentSuspectNameText.text = _currentSuspect.suspectName;
+    // currentSuspectNameText.text = _currentSuspect.suspectName;
   }
 
   private void UpdateScore()
