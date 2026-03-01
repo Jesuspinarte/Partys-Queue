@@ -7,13 +7,13 @@ public static class GameUtils
   {
     switch (occupation)
     {
-      case EnumOccupationType.CHEF: return "Chef";
-      case EnumOccupationType.ENGINEER: return "Engineer";
-      case EnumOccupationType.HERO: return "Hero";
-      case EnumOccupationType.PHYSICIAN: return "Physician";
-      case EnumOccupationType.STREAMER: return "Streamer";
-      case EnumOccupationType.STUDENT: return "Student";
-      case EnumOccupationType.UBER_DRIVER: return "Uber Driver";
+      case EnumOccupationType.CHEF: return "a CHEF";
+      case EnumOccupationType.ENGINEER: return "an ENGINEER";
+      case EnumOccupationType.HERO: return "a HERO";
+      case EnumOccupationType.PHYSICIAN: return "a PHYSICIAN";
+      case EnumOccupationType.STREAMER: return "a STREAMER";
+      case EnumOccupationType.STUDENT: return "a STUDENT";
+      case EnumOccupationType.UBER_DRIVER: return "an UBER DRIVER";
       default: return "";
     }
   }

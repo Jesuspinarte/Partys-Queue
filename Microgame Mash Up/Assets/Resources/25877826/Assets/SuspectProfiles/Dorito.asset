@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a614c0be919419e48be4c7f6a90694e8, type: 3}
   m_Name: Dorito
   m_EditorClassIdentifier: 
-  englishName: Crazy Dorito
-  spanishName: Dori Loco
+  englishName: Crazy Dory
+  spanishName: Dori Loco Quemado
   suspectShapeType: 2
   prefab: {fileID: 5771610235690519243, guid: 51d4637d17c12b94e9bc9f6cd7805939, type: 3}

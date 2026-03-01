@@ -49,10 +49,10 @@ public class SuspectProfileData
 
     switch (prefix)
     {
-      case EnumEnglishPrefix.DR: return "Dr.";
-      case EnumEnglishPrefix.MR: return "Mr.";
-      case EnumEnglishPrefix.MS: return "Ms.";
-      case EnumEnglishPrefix.SUPER: return "Super";
+      case EnumEnglishPrefix.DR: return "Doctor (PhD)";
+      case EnumEnglishPrefix.MR: return "Mister";
+      case EnumEnglishPrefix.MS: return "Missis";
+      case EnumEnglishPrefix.NEIGHBOUR: return "Your Friendly Neighbour";
       default: return "";
     }
   }
@@ -66,11 +66,7 @@ public class SuspectProfileData
       case EnumSpanishPrefix.DONA: return "Doña";
       case EnumSpanishPrefix.SENOR: return "Señor";
       case EnumSpanishPrefix.SENORA: return "Señora";
-      case EnumSpanishPrefix.VECI: return "Veci";
       default: return "";
     }
   }
-
-  // Public
-
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a614c0be919419e48be4c7f6a90694e8, type: 3}
   m_Name: Phineas
   m_EditorClassIdentifier: 
-  englishName: Not Ferb
+  englishName: I am Not Ferb
   spanishName: Buen Dato Mi Pana!
   suspectShapeType: 2
   prefab: {fileID: 9077630264848229346, guid: 035828fe7a1866047b028d133b4510b1, type: 3}

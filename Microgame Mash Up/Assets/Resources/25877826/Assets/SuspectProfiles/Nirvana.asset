@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a614c0be919419e48be4c7f6a90694e8, type: 3}
   m_Name: Nirvana
   m_EditorClassIdentifier: 
-  englishName: Niel Vana
-  spanishName: El Jajas
+  englishName: Niel O'Vana
+  spanishName: El Risas
   suspectShapeType: 0
   prefab: {fileID: 5087407815076788379, guid: f65c2cfed1c11be4da1dfea1795ce2b0, type: 3}

@@ -18,6 +18,7 @@ public class GameManager : GAWGameManager
   [SerializeField] private Transform ruleListContainer;
 
   [Header("Character Area References")]
+  [SerializeField] private TMP_Text prefixNameText;
   [SerializeField] private TMP_Text characterNameText;
   [SerializeField] private TMP_Text characterAgeText;
   [SerializeField] private TMP_Text characterOccupationText;
@@ -40,7 +41,7 @@ public class GameManager : GAWGameManager
   private GameObject _currentSuspectInstance;
   private SuspectProfileData _currentSuspect;
 
-  private List<IBlacklistRule> activeRules = new List<IBlacklistRule>();
+  private List<IBlacklistRule> activeRuleList = new List<IBlacklistRule>();
 
   // Game Managers Hooks
   public override void OnGameLoad()
@@ -68,7 +69,7 @@ public class GameManager : GAWGameManager
     // }
 
     SetupRules();
-    UpdateScore();
+    UpdateScreen();
   }
 
   public override void OnGameStart() { }
@@ -151,6 +152,10 @@ public class GameManager : GAWGameManager
 
   private void InstantiateAccessories()
   {
+    // Avoid extra noise for player familiarity when not needed I guessssssss??
+    if (GameMaster.GetDifficulty() == GameMaster.Difficulty.VERY_EASY) return;
+    if (GameMaster.GetDifficulty() == GameMaster.Difficulty.EASY) return;
+
     GameObject accessoryPrefab = null;
     // Eyes accessories
     if (_currentSuspect.eyesAccessory != EnumEyesAccessoryType.NONE)
@@ -186,73 +191,163 @@ public class GameManager : GAWGameManager
 
   private void UpdateSuspectID()
   {
-    characterNameText.text = _currentSuspect.activeName;
+    prefixNameText.text = _currentSuspect.prefix == "" ? "-" : _currentSuspect.prefix;
+    characterNameText.text = $"{_currentSuspect.activeName}";
     characterAgeText.text = $"{_currentSuspect.age} years";
     characterOccupationText.text = GameUtils.GetOccupationText(_currentSuspect.occupation);
   }
 
   private void SetupRules()
   {
-    activeRules.Clear(); // Just in case xdxdxddddd
+    activeRuleList.Clear(); // Just in case xdxdxddddd
 
     switch (GameMaster.GetDifficulty())
     {
-      case GameMaster.Difficulty.VERY_EASY:
-        SetupVeryEasyRules();
-        break;
-      case GameMaster.Difficulty.EASY:
-        SetupEasyRules();
-        break;
-      case GameMaster.Difficulty.NORMAL:
-        SetupNormalRules();
-        break;
-      case GameMaster.Difficulty.HARD:
-        SetupHardRules();
-        break;
-      case GameMaster.Difficulty.VERY_HARD:
-        SetupVeryHardRules();
-        break;
-      default:
-        SetupEasyRules();
-        break;
+      case GameMaster.Difficulty.VERY_EASY: SetupVeryEasyRules(); break;
+      case GameMaster.Difficulty.EASY: SetupEasyRules(); break;
+      case GameMaster.Difficulty.NORMAL: SetupNormalRules(); break;
+      case GameMaster.Difficulty.HARD: SetupHardRules(); break;
+      case GameMaster.Difficulty.VERY_HARD: SetupVeryHardRules(); break;
+      default: SetupEasyRules(); break;
     }
 
     UpdateNopeListUI();
   }
 
-  // ----- Difficulties -----
-  private void SetupVeryEasyRules()
+  private bool DoesRuleTypeExist(IBlacklistRule newRule)
   {
-    int ruleType = Random.Range(0, 3);
+    foreach (IBlacklistRule rule in activeRuleList)
+      if (newRule.GetType() == rule.GetType())
+        return true;
+
+    return false;
+  }
+
+  private IBlacklistRule GenerateSimpleRule()
+  {
+    int ruleType = Random.Range(0, 4);
 
     switch (ruleType)
     {
-      case 0:
-        activeRules.Add(new BanShapeRule());
-        break;
-      case 1:
-        activeRules.Add(new BanAgeRule());
-        break;
-      case 2:
-        activeRules.Add(new BanOccupationRule());
-        break;
-      default:
-        activeRules.Add(new BanShapeRule());
-        break;
+      case 0: return new BanShapeRule();
+      case 1: return new BanAgeRule();
+      case 2: return new BanOccupationRule();
+      case 3: return new BanLanguageRule();
+      default: return new BanShapeRule();
     }
   }
 
-  private void SetupEasyRules() { }
+  private IBlacklistRule GenerateAccessoryRule()
+  {
+    EnumAccessoryType ruleType = GameUtils.GetRandomEnumValue<EnumAccessoryType>();
 
-  private void SetupNormalRules() { }
+    switch (ruleType)
+    {
+      case EnumAccessoryType.EYES: return new BanEyeAccessoryRule();
+      case EnumAccessoryType.HEAD: return new BanHeadAccessoryRule();
+      case EnumAccessoryType.MOUTH: return new BanMouthAccessoryRule();
+      case EnumAccessoryType.NECK: return new BanNeckAccessoryRule();
+      case EnumAccessoryType.PETS: return new BanPetsAccessoryRule();
+      default: return new BanEyeAccessoryRule();
+    }
+  }
 
-  private void SetupHardRules() { }
+  private void GenerateSpecialRules()
+  {
+    bool isShapeSpecialRule = Random.value > 0.5f;
+    bool isLanguageSpecialRule = Random.value > 0.5f;
 
-  private void SetupVeryHardRules() { }
+    // Adds one of them if the rule if the calculation of both rules are false
+    if (!isShapeSpecialRule && !isLanguageSpecialRule)
+      activeRuleList.Add(new BanShapeUnlessOccupationRule());
+
+    // Adds a shape special rule
+    if (isShapeSpecialRule)
+      activeRuleList.Add(new BanShapeUnlessOccupationRule());
+
+    // Adds a language special rule
+    if (isLanguageSpecialRule)
+      activeRuleList.Add(new BanLanguageUnlessAgeRule());
+  }
+
+  private void GenerateMultipleSimpleRules(int min, int max)
+  {
+    int maxRules = Random.Range(min, max + 1); // MAYBE 3 is too hard?
+
+    for (int i = 0; i < maxRules; ++i)
+    {
+      IBlacklistRule newRule;
+
+      do
+        newRule = GenerateSimpleRule();
+      while (DoesRuleTypeExist(newRule));
+
+      activeRuleList.Add(newRule);
+    }
+  }
+
+  private void GenerateMultipleAccessoryRules(int min, int max)
+  {
+    int maxRules = Random.value > 0.5f ? min : max;
+
+    for (int i = 0; i < maxRules; ++i)
+    {
+      IBlacklistRule newRule;
+
+      do
+        newRule = GenerateAccessoryRule();
+      while (DoesRuleTypeExist(newRule));
+
+      activeRuleList.Add(newRule);
+    }
+  }
+
+  // ----- Difficulties -----
+
+  // One simple rule
+  private void SetupVeryEasyRules()
+  {
+    activeRuleList.Add(GenerateSimpleRule());
+  }
+
+  // 2 or 3 simple rules
+  private void SetupEasyRules()
+  {
+    GenerateMultipleSimpleRules(2, 2);
+  }
+
+  // Easy mode + 1 Accessory
+  private void SetupNormalRules()
+  {
+    // Easy
+    // GenerateMultipleSimpleRules(2, 2); // ! Maybe is too hard
+    activeRuleList.Add(GenerateSimpleRule());
+    // Accesory
+    activeRuleList.Add(GenerateAccessoryRule());
+  }
+
+  // Easy mode + 2 or 3 Accessories
+  private void SetupHardRules()
+  {
+    // Easy
+    GenerateMultipleSimpleRules(2, 2);
+    // Accesories
+    // GenerateMultipleAccessoryRules(2, 2); // ! Maybe is too hard
+    activeRuleList.Add(GenerateAccessoryRule());
+  }
+
+  // Special rules + 2 or 4 Accessory rules
+  private void SetupVeryHardRules()
+  {
+    GenerateSpecialRules();
+    // Hard
+    // GenerateMultipleAccessoryRules(2, 3); // ! Maybe is too hard
+    GenerateMultipleAccessoryRules(1, 2);
+  }
 
   private void UpdateNopeListUI()
   {
-    foreach (IBlacklistRule rule in activeRules)
+    foreach (IBlacklistRule rule in activeRuleList)
     {
       GameObject ruleGO = Instantiate(rulePrefab, ruleListContainer.position, Quaternion.identity, ruleListContainer);
       ruleGO.GetComponent<RuleController>().UpdateRuleText(rule.GetRuleDescription());
@@ -263,13 +358,13 @@ public class GameManager : GAWGameManager
 
   public bool IsSuspectBanned()
   {
-    foreach (IBlacklistRule rule in activeRules)
+    foreach (IBlacklistRule rule in activeRuleList)
       if (rule.IsBanned(_currentSuspect))
         return true;
     return false;
   }
 
-  private void UpdateScore()
+  private void UpdateScreen()
   {
     if (_currentScore < 0) _currentScore = 0;
     else if (_currentScore >= _goalScore) GameMaster.GameSucceeded();
@@ -286,7 +381,7 @@ public class GameManager : GAWGameManager
       if (_isLying) _currentScore -= 1;
       else _currentScore += 1;
 
-      UpdateScore();
+      UpdateScreen();
     }
   }
 
@@ -297,7 +392,7 @@ public class GameManager : GAWGameManager
       if (_isLying) _currentScore += 1;
       else _currentScore -= 1;
 
-      UpdateScore();
+      UpdateScreen();
     }
   }
 }

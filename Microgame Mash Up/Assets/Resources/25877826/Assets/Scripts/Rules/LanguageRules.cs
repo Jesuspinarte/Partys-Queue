@@ -7,15 +7,17 @@ public class BanLanguageRule : IBlacklistRule
   private Dictionary<EnumLanguageRuleType, string> languageList = new Dictionary<EnumLanguageRuleType, string>
   {
     {EnumLanguageRuleType.NONE, "" },
-    {EnumLanguageRuleType.FULL_ENGLISH, "A FULL ENGLISH NAME" },
-    {EnumLanguageRuleType.FULL_SPANISH, "A FULL SPANISH NAME" },
-    {EnumLanguageRuleType.PARTIAL_ENGLISH, "A PARTIAL ENGLISH NAME" },
-    {EnumLanguageRuleType.PARTIAL_SPANISH, "A PARTIAL SPANISH NAME" }
+    {EnumLanguageRuleType.FULL_ENGLISH, "100% ENGLISH (Title & Name)" },
+    {EnumLanguageRuleType.FULL_SPANISH, "100% SPANISH (Title & Name)" },
+    {EnumLanguageRuleType.PARTIAL_ENGLISH, "with MIXED LANGUAGES (Title ≠ Name)" },
+    {EnumLanguageRuleType.PARTIAL_SPANISH, "with MIXED LANGUAGES (Title ≠ Name)" }
   };
 
   public BanLanguageRule()
   {
-    languageType = GameUtils.GetRandomEnumValue<EnumLanguageRuleType>();
+    do
+      languageType = GameUtils.GetRandomEnumValue<EnumLanguageRuleType>();
+    while (languageType == EnumLanguageRuleType.NONE);
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -26,8 +28,10 @@ public class BanLanguageRule : IBlacklistRule
     {
       case EnumLanguageRuleType.FULL_ENGLISH: return suspect.isEnglishPrefix && suspect.isEnglishName;
       case EnumLanguageRuleType.FULL_SPANISH: return !suspect.isEnglishPrefix && !suspect.isEnglishName;
-      case EnumLanguageRuleType.PARTIAL_ENGLISH: return suspect.isEnglishPrefix || suspect.isEnglishName;
-      case EnumLanguageRuleType.PARTIAL_SPANISH: return !suspect.isEnglishPrefix || !suspect.isEnglishName;
+      case EnumLanguageRuleType.PARTIAL_ENGLISH:
+      case EnumLanguageRuleType.PARTIAL_SPANISH:
+        return !suspect.isEnglishPrefix && suspect.isEnglishName || suspect.isEnglishPrefix && !suspect.isEnglishName;
+
       default: return false;
     }
   }
@@ -35,11 +39,11 @@ public class BanLanguageRule : IBlacklistRule
   public string GetRuleDescription()
   {
     if (languageType == EnumLanguageRuleType.NONE) return "";
-    return $"Nobody with {languageList[languageType]}.";
+    return $"Nobody {languageList[languageType]}.";
   }
 }
 
-public class BanUnlessLanguageRule : IBlacklistRule
+public class BanLanguageUnlessAgeRule : IBlacklistRule
 {
   private EnumLanguageRuleType languageType;
   private int allowedAge;
@@ -48,17 +52,20 @@ public class BanUnlessLanguageRule : IBlacklistRule
   private Dictionary<EnumLanguageRuleType, string> languageList = new Dictionary<EnumLanguageRuleType, string>
   {
     {EnumLanguageRuleType.NONE, "" },
-    {EnumLanguageRuleType.FULL_ENGLISH, "A FULL ENGLISH NAME" },
-    {EnumLanguageRuleType.FULL_SPANISH, "A FULL SPANISH NAME" },
-    {EnumLanguageRuleType.PARTIAL_ENGLISH, "A PARTIAL ENGLISH NAME" },
-    {EnumLanguageRuleType.PARTIAL_SPANISH, "A PARTIAL SPANISH NAME" }
+    {EnumLanguageRuleType.FULL_ENGLISH, "100% ENGLISH (Title & Name)" },
+    {EnumLanguageRuleType.FULL_SPANISH, "100% SPANISH (Title & Name)" },
+    {EnumLanguageRuleType.PARTIAL_ENGLISH, "with MIXED LANGUAGES (Title ≠ Name)" },
+    {EnumLanguageRuleType.PARTIAL_SPANISH, "with MIXED LANGUAGES (Title ≠ Name)" }
   };
 
-  public BanUnlessLanguageRule()
+  public BanLanguageUnlessAgeRule()
   {
-    languageType = GameUtils.GetRandomEnumValue<EnumLanguageRuleType>();
-    allowedAge = Random.Range(15, 80);
+    allowedAge = Random.Range(30, 61);
     isOlder = Random.value > 0.5f;
+
+    do
+      languageType = GameUtils.GetRandomEnumValue<EnumLanguageRuleType>();
+    while (languageType == EnumLanguageRuleType.NONE);
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -71,8 +78,9 @@ public class BanUnlessLanguageRule : IBlacklistRule
     {
       case EnumLanguageRuleType.FULL_ENGLISH: return suspect.isEnglishPrefix && suspect.isEnglishName;
       case EnumLanguageRuleType.FULL_SPANISH: return !suspect.isEnglishPrefix && !suspect.isEnglishName;
-      case EnumLanguageRuleType.PARTIAL_ENGLISH: return suspect.isEnglishPrefix || suspect.isEnglishName;
-      case EnumLanguageRuleType.PARTIAL_SPANISH: return !suspect.isEnglishPrefix || !suspect.isEnglishName;
+      case EnumLanguageRuleType.PARTIAL_ENGLISH:
+      case EnumLanguageRuleType.PARTIAL_SPANISH:
+        return !suspect.isEnglishPrefix && suspect.isEnglishName || suspect.isEnglishPrefix && !suspect.isEnglishName;
       default: return false;
     }
   }
@@ -82,6 +90,6 @@ public class BanUnlessLanguageRule : IBlacklistRule
     string edgeCaseText = isOlder ? "is OLDER" : "is YOUNGER";
 
     if (languageType == EnumLanguageRuleType.NONE) return "";
-    return $"Nobody with {languageList[languageType]} UNLESS {edgeCaseText} than {allowedAge}.";
+    return $"Nobody {languageList[languageType]} UNLESS {edgeCaseText} than {allowedAge}.";
   }
 }

@@ -4,10 +4,11 @@ public enum EnumNameType { ENGLISH, SPANISH }
 public enum EnumSuspectShapeType { CIRCLE, SQUARE, TRIANGLE };
 
 // Prefixes
-public enum EnumEnglishPrefix { MR, MS, DR, SUPER }
-public enum EnumSpanishPrefix { SENOR, SENORA, VECI, DON, DONA }
+public enum EnumEnglishPrefix { MR, MS, DR, NEIGHBOUR }
+public enum EnumSpanishPrefix { SENOR, SENORA, DON, DONA }
 
 // Accessories
+public enum EnumAccessoryType { EYES, HEAD, MOUTH, NECK, PETS }
 public enum EnumEyesAccessoryType { NONE, GLASSES, SUNGLASSES, PIRATE_PATCH }
 public enum EnumHeadAccessoryType { NONE, BASEBALL_HAT, COWBOY_HAT, RIBBON }
 public enum EnumMouthAccessoryType { NONE, BEARD, MUSTACHE, LIPS }

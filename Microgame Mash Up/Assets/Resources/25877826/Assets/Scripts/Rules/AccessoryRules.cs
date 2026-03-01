@@ -8,13 +8,15 @@ public class BanEyeAccessoryRule : IBlacklistRule
   {
     {EnumEyesAccessoryType.NONE, "" },
     {EnumEyesAccessoryType.GLASSES, "NORMAL GLASSES" },
-    {EnumEyesAccessoryType.PIRATE_PATCH, "A PIRATE PATCH" },
+    {EnumEyesAccessoryType.PIRATE_PATCH, "a PIRATE PATCH" },
     {EnumEyesAccessoryType.SUNGLASSES, "SUNGLASSES" }
   };
 
   public BanEyeAccessoryRule()
   {
-    bannedEyeAccessory = GameUtils.GetRandomEnumValue<EnumEyesAccessoryType>();
+    do
+      bannedEyeAccessory = GameUtils.GetRandomEnumValue<EnumEyesAccessoryType>();
+    while (bannedEyeAccessory == EnumEyesAccessoryType.NONE);
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -26,7 +28,7 @@ public class BanEyeAccessoryRule : IBlacklistRule
   public string GetRuleDescription()
   {
     if (bannedEyeAccessory == EnumEyesAccessoryType.NONE) return "";
-    return $"Anyone with {eyesAccessoryList[bannedEyeAccessory]}.";
+    return $"Anyone WEARING {eyesAccessoryList[bannedEyeAccessory]}.";
   }
 
 }
@@ -38,14 +40,16 @@ public class BanMouthAccessoryRule : IBlacklistRule
   private Dictionary<EnumMouthAccessoryType, string> mouthAccessoryList = new Dictionary<EnumMouthAccessoryType, string>
   {
     {EnumMouthAccessoryType.NONE, "" },
-    {EnumMouthAccessoryType.BEARD, "BEARD" },
+    {EnumMouthAccessoryType.BEARD, "a BEARD" },
     {EnumMouthAccessoryType.LIPS, "CRAZY LIPS" },
     {EnumMouthAccessoryType.MUSTACHE, "A MUSTACHE" }
   };
 
   public BanMouthAccessoryRule()
   {
-    bannedMouthAccessory = GameUtils.GetRandomEnumValue<EnumMouthAccessoryType>();
+    do
+      bannedMouthAccessory = GameUtils.GetRandomEnumValue<EnumMouthAccessoryType>();
+    while (bannedMouthAccessory == EnumMouthAccessoryType.NONE);
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -57,7 +61,7 @@ public class BanMouthAccessoryRule : IBlacklistRule
   public string GetRuleDescription()
   {
     if (bannedMouthAccessory == EnumMouthAccessoryType.NONE) return "";
-    return $"Anyone with {mouthAccessoryList[bannedMouthAccessory]}.";
+    return $"Any FACE with {mouthAccessoryList[bannedMouthAccessory]}.";
   }
 }
 
@@ -68,14 +72,16 @@ public class BanHeadAccessoryRule : IBlacklistRule
   private Dictionary<EnumHeadAccessoryType, string> headAccessoryList = new Dictionary<EnumHeadAccessoryType, string>
   {
     {EnumHeadAccessoryType.NONE, "" },
-    {EnumHeadAccessoryType.BASEBALL_HAT, "A BASEBALL HAT" },
-    {EnumHeadAccessoryType.COWBOY_HAT, "COWBOY HAT" },
-    {EnumHeadAccessoryType.RIBBON, "A RIBBON" }
+    {EnumHeadAccessoryType.BASEBALL_HAT, "a BASEBALL HAT" },
+    {EnumHeadAccessoryType.COWBOY_HAT, "a COWBOY HAT" },
+    {EnumHeadAccessoryType.RIBBON, "a RIBBON" }
   };
 
   public BanHeadAccessoryRule()
   {
-    bannedHeadAccessory = GameUtils.GetRandomEnumValue<EnumHeadAccessoryType>();;
+    do
+      bannedHeadAccessory = GameUtils.GetRandomEnumValue<EnumHeadAccessoryType>();
+    while (bannedHeadAccessory == EnumHeadAccessoryType.NONE);
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -87,7 +93,7 @@ public class BanHeadAccessoryRule : IBlacklistRule
   public string GetRuleDescription()
   {
     if (bannedHeadAccessory == EnumHeadAccessoryType.NONE) return "";
-    return $"Anyone with {headAccessoryList[bannedHeadAccessory]}.";
+    return $"Anyone WEARING {headAccessoryList[bannedHeadAccessory]}.";
   }
 }
 
@@ -98,14 +104,16 @@ public class BanNeckAccessoryRule : IBlacklistRule
   private Dictionary<EnumNeckAccessoryType, string> neckAccessoryList = new Dictionary<EnumNeckAccessoryType, string>
   {
     {EnumNeckAccessoryType.NONE, "" },
-    {EnumNeckAccessoryType.NECKLACE, "A FANCY NECKLACE" },
-    {EnumNeckAccessoryType.SCARF, "A BORING SCARF" },
-    {EnumNeckAccessoryType.TIE, "AN OFFICE TIE" }
+    {EnumNeckAccessoryType.NECKLACE, "a FANCY NECKLACE" },
+    {EnumNeckAccessoryType.SCARF, "a BORING SCARF" },
+    {EnumNeckAccessoryType.TIE, "an OFFICE TIE" }
   };
 
   public BanNeckAccessoryRule()
   {
-    bannedNeckAccessory = GameUtils.GetRandomEnumValue<EnumNeckAccessoryType>();;
+    do
+      bannedNeckAccessory = GameUtils.GetRandomEnumValue<EnumNeckAccessoryType>();
+    while (bannedNeckAccessory == EnumNeckAccessoryType.NONE);
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -117,7 +125,7 @@ public class BanNeckAccessoryRule : IBlacklistRule
   public string GetRuleDescription()
   {
     if (bannedNeckAccessory == EnumNeckAccessoryType.NONE) return "";
-    return $"Anyone with {neckAccessoryList[bannedNeckAccessory]}.";
+    return $"Anyone WEARING {neckAccessoryList[bannedNeckAccessory]}.";
   }
 }
 
@@ -128,14 +136,16 @@ public class BanPetsAccessoryRule : IBlacklistRule
   private Dictionary<EnumPetsAccessoryType, string> petsAccessoryList = new Dictionary<EnumPetsAccessoryType, string>
   {
     {EnumPetsAccessoryType.NONE, "" },
-    {EnumPetsAccessoryType.LEFT_PET, "A PET ON THE LEFT" },
-    {EnumPetsAccessoryType.RIGHT_PET, "A PET ON THE RIGHT" },
-    {EnumPetsAccessoryType.DOUBLE_PETS, "MORE THAN ONE PET" }
+    {EnumPetsAccessoryType.LEFT_PET, "a PET on the LEFT" },
+    {EnumPetsAccessoryType.RIGHT_PET, "a PET on the RIGHT" },
+    {EnumPetsAccessoryType.DOUBLE_PETS, "MORE than ONE PET" }
   };
 
   public BanPetsAccessoryRule()
   {
-    bannedPetsAccessory = GameUtils.GetRandomEnumValue<EnumPetsAccessoryType>();;
+    do
+      bannedPetsAccessory = GameUtils.GetRandomEnumValue<EnumPetsAccessoryType>();
+    while (bannedPetsAccessory == EnumPetsAccessoryType.NONE);
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -149,6 +159,6 @@ public class BanPetsAccessoryRule : IBlacklistRule
   public string GetRuleDescription()
   {
     if (bannedPetsAccessory == EnumPetsAccessoryType.NONE) return "";
-    return $"Anyone with {petsAccessoryList[bannedPetsAccessory]}.";
+    return $"Anyone COMMING with {petsAccessoryList[bannedPetsAccessory]}.";
   }
 }

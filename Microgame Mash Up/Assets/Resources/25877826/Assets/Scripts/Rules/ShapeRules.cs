@@ -37,6 +37,6 @@ public class BanShapeUnlessOccupationRule : IBlacklistRule
     return false;
   }
 
-  public string GetRuleDescription() => $"Nobody with {bannedShape} face UNLESS they are a {GameUtils.GetOccupationText(allowedOccupation)}.";
+  public string GetRuleDescription() => $"Nobody with {bannedShape} face UNLESS they are {GameUtils.GetOccupationText(allowedOccupation)}.";
 
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a614c0be919419e48be4c7f6a90694e8, type: 3}
   m_Name: SpongeBob
   m_EditorClassIdentifier: 
-  englishName: Robert Sponge
+  englishName: Bobby Sponge
   spanishName: Roberto Esponja
   suspectShapeType: 1
   prefab: {fileID: 1357825140946642512, guid: f03ba32d0de034842afaeb158f97936f, type: 3}
