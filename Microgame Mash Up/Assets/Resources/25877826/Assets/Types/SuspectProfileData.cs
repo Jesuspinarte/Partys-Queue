@@ -10,7 +10,7 @@ public class SuspectProfileData
   public int age;
   public string prefix;
   public string activeName;
-  public EnumJobType occupation;
+  public EnumOccupationType occupation;
 
   // Selected languages
   public bool isEnglishName;
@@ -31,7 +31,7 @@ public class SuspectProfileData
     age = Random.Range(15, 80);
     isEnglishName = Random.value > 0.5f;
     isEnglishPrefix = Random.value > 0.5f;
-    occupation = GetRandomEnumValue<EnumJobType>();
+    occupation = GetRandomEnumValue<EnumOccupationType>();
 
     // Demographics
     prefix = isEnglishPrefix ? GetRandomEnglishPrefix() : GetRandomSpanishPrefix();
@@ -59,16 +59,11 @@ public class SuspectProfileData
 
     switch (prefix)
     {
-      case EnumEnglishPrefix.DR:
-        return "Dr.";
-      case EnumEnglishPrefix.MR:
-        return "Mr.";
-      case EnumEnglishPrefix.MS:
-        return "Ms.";
-      case EnumEnglishPrefix.SUPER:
-        return "Super";
-      default:
-        return "";
+      case EnumEnglishPrefix.DR: return "Dr.";
+      case EnumEnglishPrefix.MR: return "Mr.";
+      case EnumEnglishPrefix.MS: return "Ms.";
+      case EnumEnglishPrefix.SUPER: return "Super";
+      default: return "";
     }
   }
 
@@ -77,42 +72,15 @@ public class SuspectProfileData
     EnumSpanishPrefix prefix = GetRandomEnumValue<EnumSpanishPrefix>();
     switch (prefix)
     {
-      case EnumSpanishPrefix.DON:
-        return "Don";
-      case EnumSpanishPrefix.DONA:
-        return "Doña";
-      case EnumSpanishPrefix.SENOR:
-        return "Señor";
-      case EnumSpanishPrefix.SENORA:
-        return "Señora";
-      case EnumSpanishPrefix.VECI:
-        return "Veci";
-      default:
-        return "";
+      case EnumSpanishPrefix.DON: return "Don";
+      case EnumSpanishPrefix.DONA: return "Doña";
+      case EnumSpanishPrefix.SENOR: return "Señor";
+      case EnumSpanishPrefix.SENORA: return "Señora";
+      case EnumSpanishPrefix.VECI: return "Veci";
+      default: return "";
     }
   }
 
   // Public
-  public string GetOccupationText()
-  {
-    switch (occupation)
-    {
-      case EnumJobType.CHEF:
-        return "Chef";
-      case EnumJobType.ENGINEER:
-        return "Engineer";
-      case EnumJobType.HERO:
-        return "Hero";
-      case EnumJobType.PHYSICIAN:
-        return "Physician";
-      case EnumJobType.STREAMER:
-        return "Streamer";
-      case EnumJobType.STUDENT:
-        return "Student";
-      case EnumJobType.UBER_DRIVER:
-        return "Uber Driver";
-      default:
-        return "";
-    }
-  }
+
 }

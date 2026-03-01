@@ -14,8 +14,9 @@ public class GameManager : GAWGameManager
   [SerializeField] private TMP_Text finishText;
 
   [Header("Blacklist Area References")]
+  [SerializeField] private GameObject rulePrefab;
   [SerializeField] private TMP_Text currentScoreText;
-  [SerializeField] private TMP_Text[] rulesList;
+  [SerializeField] private Transform ruleListContainer;
 
   [Header("Character Area References")]
   [SerializeField] private TMP_Text characterNameText;
@@ -66,10 +67,7 @@ public class GameManager : GAWGameManager
     UpdateScore();
   }
 
-  public override void OnGameStart()
-  {
-
-  }
+  public override void OnGameStart() { }
 
   public override void OnGameSucceeded()
   {
@@ -151,7 +149,7 @@ public class GameManager : GAWGameManager
   {
     characterNameText.text = _currentSuspect.activeName;
     characterAgeText.text = $"{_currentSuspect.age} years";
-    characterOccupationText.text = _currentSuspect.GetOccupationText();
+    characterOccupationText.text = GameUtils.GetOccupationText(_currentSuspect.occupation);
   }
 
   private void InstantiateAccessories()
