@@ -12,9 +12,9 @@ public class BanEyeAccessoryRule : IBlacklistRule
     {EnumEyesAccessoryType.SUNGLASSES, "SUNGLASSES" }
   };
 
-  public BanEyeAccessoryRule(EnumEyesAccessoryType accessoryToBan)
+  public BanEyeAccessoryRule()
   {
-    bannedEyeAccessory = accessoryToBan;
+    bannedEyeAccessory = GameUtils.GetRandomEnumValue<EnumEyesAccessoryType>();
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -43,9 +43,9 @@ public class BanMouthAccessoryRule : IBlacklistRule
     {EnumMouthAccessoryType.MUSTACHE, "A MUSTACHE" }
   };
 
-  public BanMouthAccessoryRule(EnumMouthAccessoryType accessoryToBan)
+  public BanMouthAccessoryRule()
   {
-    bannedMouthAccessory = accessoryToBan;
+    bannedMouthAccessory = GameUtils.GetRandomEnumValue<EnumMouthAccessoryType>();
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -73,9 +73,9 @@ public class BanHeadAccessoryRule : IBlacklistRule
     {EnumHeadAccessoryType.RIBBON, "A RIBBON" }
   };
 
-  public BanHeadAccessoryRule(EnumHeadAccessoryType accessoryToBan)
+  public BanHeadAccessoryRule()
   {
-    bannedHeadAccessory = accessoryToBan;
+    bannedHeadAccessory = GameUtils.GetRandomEnumValue<EnumHeadAccessoryType>();;
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -103,9 +103,9 @@ public class BanNeckAccessoryRule : IBlacklistRule
     {EnumNeckAccessoryType.TIE, "AN OFFICE TIE" }
   };
 
-  public BanNeckAccessoryRule(EnumNeckAccessoryType accessoryToBan)
+  public BanNeckAccessoryRule()
   {
-    bannedNeckAccessory = accessoryToBan;
+    bannedNeckAccessory = GameUtils.GetRandomEnumValue<EnumNeckAccessoryType>();;
   }
 
   public bool IsBanned(SuspectProfileData suspect)
@@ -133,9 +133,9 @@ public class BanPetsAccessoryRule : IBlacklistRule
     {EnumPetsAccessoryType.DOUBLE_PETS, "MORE THAN ONE PET" }
   };
 
-  public BanPetsAccessoryRule(EnumPetsAccessoryType accessoryToBan)
+  public BanPetsAccessoryRule()
   {
-    bannedPetsAccessory = accessoryToBan;
+    bannedPetsAccessory = GameUtils.GetRandomEnumValue<EnumPetsAccessoryType>();;
   }
 
   public bool IsBanned(SuspectProfileData suspect)

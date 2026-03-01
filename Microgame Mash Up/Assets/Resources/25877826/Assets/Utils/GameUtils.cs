@@ -1,3 +1,5 @@
+using System;
+using Random = UnityEngine.Random;
 
 public static class GameUtils
 {
@@ -14,5 +16,12 @@ public static class GameUtils
       case EnumOccupationType.UBER_DRIVER: return "Uber Driver";
       default: return "";
     }
+  }
+
+  public static T GetRandomEnumValue<T>()
+  {
+    var values = Enum.GetValues(typeof(T));
+    int random = Random.Range(0, values.Length);
+    return (T)values.GetValue(random);
   }
 }

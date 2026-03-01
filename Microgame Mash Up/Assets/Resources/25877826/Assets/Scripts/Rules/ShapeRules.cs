@@ -10,9 +10,9 @@ public class BanShapeRule : IBlacklistRule
       {EnumSuspectShapeType.TRIANGLE, "TRIANGULAR" }
     };
 
-  public BanShapeRule(EnumSuspectShapeType shapeToBan)
+  public BanShapeRule()
   {
-    bannedShape = shapeToBan;
+    bannedShape = GameUtils.GetRandomEnumValue<EnumSuspectShapeType>();
   }
 
   public bool IsBanned(SuspectProfileData suspect) => suspect.profileData.suspectShapeType == bannedShape;
@@ -24,18 +24,19 @@ public class BanShapeUnlessOccupationRule : IBlacklistRule
   private EnumSuspectShapeType bannedShape;
   private EnumOccupationType allowedOccupation;
 
-  public BanShapeUnlessOccupationRule(EnumSuspectShapeType shape, EnumOccupationType occupation)
+  public BanShapeUnlessOccupationRule()
   {
-    bannedShape = shape;
-    allowedOccupation = occupation;
+    bannedShape = GameUtils.GetRandomEnumValue<EnumSuspectShapeType>();
+    allowedOccupation = GameUtils.GetRandomEnumValue<EnumOccupationType>();
   }
 
   public bool IsBanned(SuspectProfileData suspect)
   {
-    if (suspect.profileData.suspectShapeType == bannedShape && suspect.occupation != allowedOccupation) return true;
+    if (suspect.occupation == allowedOccupation) return false;
+    if (suspect.profileData.suspectShapeType == bannedShape) return true;
     return false;
   }
 
-  public string GetRuleDescription() => $"Nobody with {bannedShape} face. UNLESS they are a {GameUtils.GetOccupationText(allowedOccupation)}.";
+  public string GetRuleDescription() => $"Nobody with {bannedShape} face UNLESS they are a {GameUtils.GetOccupationText(allowedOccupation)}.";
 
 }

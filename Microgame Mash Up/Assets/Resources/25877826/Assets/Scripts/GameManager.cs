@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -33,37 +32,42 @@ public class GameManager : GAWGameManager
   [SerializeField] private Transform spawnPoint;
 
   // Private vars
-  private SuspectProfileData _currentSuspect;
-  private GameObject _currentSuspectInstance;
   private bool _isLying = false;
+
+  private int _goalScore = 5;
   private int _currentScore = 0;
-  private int _goalScore = 10;
+
+  private GameObject _currentSuspectInstance;
+  private SuspectProfileData _currentSuspect;
+
+  private List<IBlacklistRule> activeRules = new List<IBlacklistRule>();
 
   // Game Managers Hooks
   public override void OnGameLoad()
   {
-    switch (GameMaster.GetDifficulty())
-    {
-      case GameMaster.Difficulty.VERY_EASY:
-        _goalScore = 5;
-        break;
-      case GameMaster.Difficulty.EASY:
-        _goalScore = 5;
-        break;
-      case GameMaster.Difficulty.NORMAL:
-        _goalScore = 7;
-        break;
-      case GameMaster.Difficulty.HARD:
-        _goalScore = 10;
-        break;
-      case GameMaster.Difficulty.VERY_HARD:
-        _goalScore = 15;
-        break;
-      default:
-        _goalScore = 10;
-        break;
-    }
+    // switch (GameMaster.GetDifficulty())
+    // {
+    //   case GameMaster.Difficulty.VERY_EASY:
+    //     _goalScore = 5;
+    //     break;
+    //   case GameMaster.Difficulty.EASY:
+    //     _goalScore = 5;
+    //     break;
+    //   case GameMaster.Difficulty.NORMAL:
+    //     _goalScore = 7;
+    //     break;
+    //   case GameMaster.Difficulty.HARD:
+    //     _goalScore = 10;
+    //     break;
+    //   case GameMaster.Difficulty.VERY_HARD:
+    //     _goalScore = 15;
+    //     break;
+    //   default:
+    //     _goalScore = 10;
+    //     break;
+    // }
 
+    SetupRules();
     UpdateScore();
   }
 
@@ -130,8 +134,8 @@ public class GameManager : GAWGameManager
       InstantiateAccessories();
       // 5. Update UI
       UpdateSuspectID();
-
-      // . Add and check new rules
+      // 6. Check if the suspect is lying
+      _isLying = IsSuspectBanned();
       // if (_currentSuspect.suspectShapeType != _currentSuspect.claimedShape) _isLying = true;
       // if (_currentSuspect.suspectColor != _currentSuspect.claimedColor) _isLying = true;
 
@@ -143,13 +147,6 @@ public class GameManager : GAWGameManager
   {
     _currentSuspect = new SuspectProfileData(profile);
     _currentSuspectInstance = Instantiate(_currentSuspect.profileData.prefab, spawnPoint.position + Vector3.forward, Quaternion.identity, spawnPoint);
-  }
-
-  private void UpdateSuspectID()
-  {
-    characterNameText.text = _currentSuspect.activeName;
-    characterAgeText.text = $"{_currentSuspect.age} years";
-    characterOccupationText.text = GameUtils.GetOccupationText(_currentSuspect.occupation);
   }
 
   private void InstantiateAccessories()
@@ -185,6 +182,91 @@ public class GameManager : GAWGameManager
       accessoryPrefab = petsAccessoryList.Find(accessory => accessory.type == _currentSuspect.petsAccessory).accessoryObj;
       Instantiate(accessoryPrefab, spawnPoint.position, Quaternion.identity, spawnPoint);
     }
+  }
+
+  private void UpdateSuspectID()
+  {
+    characterNameText.text = _currentSuspect.activeName;
+    characterAgeText.text = $"{_currentSuspect.age} years";
+    characterOccupationText.text = GameUtils.GetOccupationText(_currentSuspect.occupation);
+  }
+
+  private void SetupRules()
+  {
+    activeRules.Clear(); // Just in case xdxdxddddd
+
+    switch (GameMaster.GetDifficulty())
+    {
+      case GameMaster.Difficulty.VERY_EASY:
+        SetupVeryEasyRules();
+        break;
+      case GameMaster.Difficulty.EASY:
+        SetupEasyRules();
+        break;
+      case GameMaster.Difficulty.NORMAL:
+        SetupNormalRules();
+        break;
+      case GameMaster.Difficulty.HARD:
+        SetupHardRules();
+        break;
+      case GameMaster.Difficulty.VERY_HARD:
+        SetupVeryHardRules();
+        break;
+      default:
+        SetupEasyRules();
+        break;
+    }
+
+    UpdateNopeListUI();
+  }
+
+  // ----- Difficulties -----
+  private void SetupVeryEasyRules()
+  {
+    int ruleType = Random.Range(0, 3);
+
+    switch (ruleType)
+    {
+      case 0:
+        activeRules.Add(new BanShapeRule());
+        break;
+      case 1:
+        activeRules.Add(new BanAgeRule());
+        break;
+      case 2:
+        activeRules.Add(new BanOccupationRule());
+        break;
+      default:
+        activeRules.Add(new BanShapeRule());
+        break;
+    }
+  }
+
+  private void SetupEasyRules() { }
+
+  private void SetupNormalRules() { }
+
+  private void SetupHardRules() { }
+
+  private void SetupVeryHardRules() { }
+
+  private void UpdateNopeListUI()
+  {
+    foreach (IBlacklistRule rule in activeRules)
+    {
+      GameObject ruleGO = Instantiate(rulePrefab, ruleListContainer.position, Quaternion.identity, ruleListContainer);
+      ruleGO.GetComponent<RuleController>().UpdateRuleText(rule.GetRuleDescription());
+    }
+  }
+
+  // ---------------------------
+
+  public bool IsSuspectBanned()
+  {
+    foreach (IBlacklistRule rule in activeRules)
+      if (rule.IsBanned(_currentSuspect))
+        return true;
+    return false;
   }
 
   private void UpdateScore()

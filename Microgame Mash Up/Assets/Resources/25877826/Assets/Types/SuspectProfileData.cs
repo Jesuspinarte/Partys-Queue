@@ -1,5 +1,3 @@
-using System;
-
 using Random = UnityEngine.Random;
 
 public class SuspectProfileData
@@ -31,31 +29,23 @@ public class SuspectProfileData
     age = Random.Range(15, 80);
     isEnglishName = Random.value > 0.5f;
     isEnglishPrefix = Random.value > 0.5f;
-    occupation = GetRandomEnumValue<EnumOccupationType>();
+    occupation = GameUtils.GetRandomEnumValue<EnumOccupationType>();
 
     // Demographics
     prefix = isEnglishPrefix ? GetRandomEnglishPrefix() : GetRandomSpanishPrefix();
     activeName = isEnglishName ? _profileData.englishName : _profileData.spanishName;
 
     // Assign random accessories
-    eyesAccessory = GetRandomEnumValue<EnumEyesAccessoryType>();
-    headAccessory = GetRandomEnumValue<EnumHeadAccessoryType>();
-    mouthAccessory = GetRandomEnumValue<EnumMouthAccessoryType>();
-    neckAccessory = GetRandomEnumValue<EnumNeckAccessoryType>();
-    petsAccessory = GetRandomEnumValue<EnumPetsAccessoryType>();
-  }
-
-  // Helpers
-  private T GetRandomEnumValue<T>()
-  {
-    var values = Enum.GetValues(typeof(T));
-    int random = Random.Range(0, values.Length);
-    return (T)values.GetValue(random);
+    eyesAccessory = GameUtils.GetRandomEnumValue<EnumEyesAccessoryType>();
+    headAccessory = GameUtils.GetRandomEnumValue<EnumHeadAccessoryType>();
+    mouthAccessory = GameUtils.GetRandomEnumValue<EnumMouthAccessoryType>();
+    neckAccessory = GameUtils.GetRandomEnumValue<EnumNeckAccessoryType>();
+    petsAccessory = GameUtils.GetRandomEnumValue<EnumPetsAccessoryType>();
   }
 
   private string GetRandomEnglishPrefix()
   {
-    EnumEnglishPrefix prefix = GetRandomEnumValue<EnumEnglishPrefix>();
+    EnumEnglishPrefix prefix = GameUtils.GetRandomEnumValue<EnumEnglishPrefix>();
 
     switch (prefix)
     {
@@ -69,7 +59,7 @@ public class SuspectProfileData
 
   private string GetRandomSpanishPrefix()
   {
-    EnumSpanishPrefix prefix = GetRandomEnumValue<EnumSpanishPrefix>();
+    EnumSpanishPrefix prefix = GameUtils.GetRandomEnumValue<EnumSpanishPrefix>();
     switch (prefix)
     {
       case EnumSpanishPrefix.DON: return "Don";

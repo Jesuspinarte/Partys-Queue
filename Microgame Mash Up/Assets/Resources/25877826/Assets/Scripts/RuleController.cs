@@ -3,5 +3,7 @@ using UnityEngine;
 
 public class RuleController : MonoBehaviour
 {
-  public TMP_Text ruleText;
+  [SerializeField] private TMP_Text ruleText;
+
+  public void UpdateRuleText(string text) => ruleText.text = text;
 }
