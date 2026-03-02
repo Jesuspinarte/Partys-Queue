@@ -38,6 +38,7 @@ public class GameManager : GAWGameManager
   private int _goalScore = 5;
   private int _currentScore = 0;
 
+  private FeedbackManager _feedbackManager;
   private GameObject _currentSuspectInstance;
   private SuspectProfileData _currentSuspect;
 
@@ -76,6 +77,7 @@ public class GameManager : GAWGameManager
 
   public override void OnGameSucceeded()
   {
+    _feedbackManager.PlayWinGame();
     RemoveCurrentSuspect();
 
     if (gameContainer != null) gameContainer.SetActive(false);
@@ -89,6 +91,7 @@ public class GameManager : GAWGameManager
 
   public override void OnGameFailed()
   {
+    _feedbackManager.PlayLoseGame();
     RemoveCurrentSuspect();
 
     if (gameContainer != null) gameContainer.SetActive(false);
@@ -101,6 +104,11 @@ public class GameManager : GAWGameManager
   }
 
   // Unity Hooks
+  private void Awake()
+  {
+    _feedbackManager = GetComponent<FeedbackManager>();
+  }
+
   private void Update()
   {
     if (Input.GetKeyDown(KeyCode.A)) OnAllow();
@@ -378,8 +386,16 @@ public class GameManager : GAWGameManager
   {
     if (GameMaster.GetGameState() == Game.State.RUNNING)
     {
-      if (_isLying) _currentScore -= 1;
-      else _currentScore += 1;
+      if (_isLying)
+      {
+        _currentScore -= 1;
+        _feedbackManager.PlayFail();
+      }
+      else
+      {
+        _currentScore += 1;
+        _feedbackManager.PlaySuccess();
+      }
 
       UpdateScreen();
     }
@@ -389,8 +405,16 @@ public class GameManager : GAWGameManager
   {
     if (GameMaster.GetGameState() == Game.State.RUNNING)
     {
-      if (_isLying) _currentScore += 1;
-      else _currentScore -= 1;
+      if (_isLying)
+      {
+        _currentScore += 1;
+        _feedbackManager.PlaySuccess();
+      }
+      else
+      {
+        _currentScore -= 1;
+        _feedbackManager.PlayFail();
+      }
 
       UpdateScreen();
     }
