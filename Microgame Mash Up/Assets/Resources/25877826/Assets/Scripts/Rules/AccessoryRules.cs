@@ -138,7 +138,7 @@ public class BanPetsAccessoryRule : IBlacklistRule
     {EnumPetsAccessoryType.NONE, "" },
     {EnumPetsAccessoryType.LEFT_PET, "a PET on the LEFT" },
     {EnumPetsAccessoryType.RIGHT_PET, "a PET on the RIGHT" },
-    {EnumPetsAccessoryType.DOUBLE_PETS, "MORE than ONE PET" }
+    {EnumPetsAccessoryType.DOUBLE_PETS, "one PET or MORE" }
   };
 
   public BanPetsAccessoryRule()

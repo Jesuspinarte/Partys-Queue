@@ -47,27 +47,27 @@ public class GameManager : GAWGameManager
   // Game Managers Hooks
   public override void OnGameLoad()
   {
-    // switch (GameMaster.GetDifficulty())
-    // {
-    //   case GameMaster.Difficulty.VERY_EASY:
-    //     _goalScore = 5;
-    //     break;
-    //   case GameMaster.Difficulty.EASY:
-    //     _goalScore = 5;
-    //     break;
-    //   case GameMaster.Difficulty.NORMAL:
-    //     _goalScore = 7;
-    //     break;
-    //   case GameMaster.Difficulty.HARD:
-    //     _goalScore = 10;
-    //     break;
-    //   case GameMaster.Difficulty.VERY_HARD:
-    //     _goalScore = 15;
-    //     break;
-    //   default:
-    //     _goalScore = 10;
-    //     break;
-    // }
+    switch (GameMaster.GetDifficulty())
+    {
+      case GameMaster.Difficulty.VERY_EASY:
+        _goalScore = 5;
+        break;
+      case GameMaster.Difficulty.EASY:
+        _goalScore = 5;
+        break;
+      case GameMaster.Difficulty.NORMAL:
+        _goalScore = 4;
+        break;
+      case GameMaster.Difficulty.HARD:
+        _goalScore = 3;
+        break;
+      case GameMaster.Difficulty.VERY_HARD:
+        _goalScore = 3;
+        break;
+      default:
+        _goalScore = 10;
+        break;
+    }
 
     SetupRules();
     UpdateScreen();
