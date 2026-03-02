@@ -1323,8 +1323,8 @@ MonoBehaviour:
     introText2: They
     introText3: Party?
     description: An oversimplified version of Papers Please
-    icon: {fileID: 0}
-    keyArt: {fileID: 0}
+    icon: {fileID: 6934086728263231946, guid: 97b655dde6b8a2243afeae0af9f7862b, type: 3}
+    keyArt: {fileID: 3649649797826444214, guid: 6a35b2cbfe3b865488d1e1860aa3a6bd, type: 3}
 --- !u!114 &5460955021304979505
 MonoBehaviour:
   m_ObjectHideFlags: 0
