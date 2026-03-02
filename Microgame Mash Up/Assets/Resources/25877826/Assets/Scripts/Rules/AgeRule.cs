@@ -7,7 +7,7 @@ public class BanAgeRule : IBlacklistRule
 
   public BanAgeRule()
   {
-    allowedAge = Random.Range(15, 80);
+    allowedAge = Random.Range(35, 55);
     isOlder = Random.value > 0.5f;
   }
 
