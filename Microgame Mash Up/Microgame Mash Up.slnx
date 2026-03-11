@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Project Path="Core.csproj" />
+  <Project Path="25877826.csproj" />
+  <Project Path="TemplateScripts.csproj" />
+  <Project Path="com.olegknyazev.softmask.csproj" />
+  <Project Path="com.olegknyazev.softmask.Editor.csproj" />
+  <Project Path="Example.csproj" />
+</Solution>
